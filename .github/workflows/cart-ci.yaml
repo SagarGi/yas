@@ -28,6 +28,14 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/workflows/actions
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-cart-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-cart-
+            ${{ runner.os }}-maven-
       - name: Run Maven Build Command
         run: mvn clean install -pl cart -am
       - name: Test Results
@@ -54,6 +62,14 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/workflows/actions
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-cart-checkstyle-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-cart-
+            ${{ runner.os }}-maven-
       - name: Run Maven Checkstyle
         if: ${{ env.FROM_ORIGINAL_REPOSITORY == 'true' }}
         run: mvn checkstyle:checkstyle -pl cart -am -Dcheckstyle.output.file=cart-checkstyle-result.xml
@@ -73,6 +89,14 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/workflows/actions
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-cart-security-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-cart-
+            ${{ runner.os }}-maven-
       - name: Run Maven Build
         run: mvn clean install -pl cart -am -DskipTests
       - name: Analyze with sonar cloud
